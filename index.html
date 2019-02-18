@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>sTags - Demo</title>
+<link rel="stylesheet" type="text/css" href="jquery.sTags.css">
+<style type="text/css">
+hr{
+	margin: 100px 0 0 0;
+    border: #fb0000 solid; 
+    border-width: 1px 0 0 0;
+}
+</style>
+
+<script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdn.bootcss.com/highlight.js/9.14.2/styles/agate.min.css">
+<script src="https://cdn.bootcss.com/highlight.js/9.14.2/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script> 
+<script src="jquery.sTags.js"></script>
+</head>
+<body>
+标签数据：
+<pre>
+	<code class="javascript">
+		var tagsdata=[]
+		tagsdata.push({id:1,name:"PHP",screen:"php"})
+		tagsdata.push({id:4,name:"C#",screen:"c"})
+		tagsdata.push({id:6,name:"JavaScript",screen:"javascript"})
+		tagsdata.push({id:2,name:"HTML5",screen:"html5"})
+		tagsdata.push({id:3,name:"Python",screen:"python"})
+		tagsdata.push({id:5,name:"数据库",screen:"sjk"})
+		tagsdata.push({id:7,name:"服务器",screen:"fwq"})
+
+
+		var tagsdata1=[]
+		tagsdata1.push({id:1,name:"恐怖片",py:"kbp"})
+		tagsdata1.push({id:4,name:"科幻片",py:"khp"})
+		tagsdata1.push({id:6,name:"爱情片",py:"aqp"})
+		tagsdata1.push({id:2,name:"战争片",py:"zzp"})
+		tagsdata1.push({id:3,name:"动作片",py:"dzp"})
+		tagsdata1.push({id:5,name:"动画片",py:"dhp"})
+		tagsdata1.push({id:7,name:"喜剧片",py:"xjp"})
+	</code>
+
+	</code>
+</pre>	
+<hr>
+<h1>DEMO INPUT 1 : 基本功能</h1>
+JS Code:
+<pre>
+	<code class="javascript">
+	$("#demo1").sTags({
+		data:tagsdata,
+	})
+	</code>
+</pre>	
+HTML Code:
+
+
+<input type="text" id="demo1">
+
+
+
+
+
+<hr>
+<h1>DEMO INPUT 2 :标签内有默认值 标签随机颜色</h1>
+JS Code:
+<pre>
+	<code class="javascript">
+	$("#demo2").sTags({
+		data:tagsdata,
+		colro:2
+	})
+	</code>
+</pre>	
+<input type="text" id="demo2" value="2,3">
+
+
+
+
+<hr>
+<h1>DEMO INPUT 3 :自定义默认值</h1>
+JS Code:
+<pre>
+	<code class="javascript">
+	$("#demo3").sTags({
+		defaultData:[1,3,2],
+		data:tagsdata,
+		colro:[0]
+
+	})
+	</code>
+</pre>	
+<input type="text" id="demo3" value="">
+
+
+
+
+
+<hr>
+<h1>DEMO div 1 :基本功能</h1>
+JS Code:
+<pre>
+	<code class="javascript">
+	$("#demo4").sTags({
+		data:tagsdata,
+	})
+	</code>
+</pre>	
+<div id="demo4"></div>
+
+
+
+
+
+<hr>
+<h1>DEMO div 2:自定义默认值 关闭筛选</h1>
+JS Code:
+<pre>
+	<code class="javascript">
+	$("#demo5").sTags({
+		defaultData:[1,3,2],
+		data:tagsdata,
+		screen:false
+	})
+	</code>
+</pre>	
+<div id="demo5"></div>
+
+
+
+
+
+<hr>
+<h1>DEMO div 3:自定义标签 自定义事件</h1>
+默认情况下标签是以div标签包裹span标签内包裹标签名，自定义则改变div标签内的包裹内容。
+JS Code:
+<pre>
+	<code class="javascript">
+	$("#demo6").sTags({
+		defaultData:[1,3,2],
+		data:tagsdata1,
+		tagHtml:"{name}-{id}",
+		click:function(e){
+			alert(e.attr("tagid"))
+		},
+	})
+	</code>
+</pre>	
+<div id="demo6"></div>
+数据中无筛选项目，按筛选内容改变颜色无效
+
+
+<hr>
+<h1>DEMO div 4:改为链接 补充数据</h1>
+默认情况下标签是元素是div，可将其改为链接标签a。
+JS Code:
+<pre>
+	<code class="javascript">
+	$("#demo7").sTags({
+		defaultData:[1,3,2],
+		data:tagsdata,
+		dataAttr:["id","name","py"],
+		screen:false,
+		a:{
+			href:"",
+			target:"_blank"
+		}
+	})
+	</code>
+</pre>	
+<div id="demo7"></div>
+原始数据的数据与本插件的数据格式不符，缺少screen属性。<br>原始数据中的py数据也可作为screen数据，则在设置中添加  dataAttr:["id","name","py"]
+
+
+<hr>
+<h1>DEMO div 5:附加标签（按钮）和 标签独立事件</h1>
+JS Code:
+<pre>
+	<code class="javascript">
+	tagsdata.push({id:8,name:"独立按钮",screen:"cas",fn:function(){console.log("单独的事件")}})
+
+	$("#demo8").sTags({
+		defaultData:[1,3,2],
+		data:tagsdata,
+		screen:false
+		data_:[
+			{
+				name:"前排插入标签",
+				position:0,
+				fn:function(){
+					console.log("前排插入标签 事件")
+				}
+			},
+			{
+				name:"后排插入标签",
+				position:1,
+				fn:function(){
+					console.log("后排插入标签 事件")
+				}
+			}
+		]
+
+	})
+	</code>
+</pre>	
+<div id="demo8"></div>
+
+标签数据中还可以有独立的事件：fn属性。数据中如有该属性，将替换默认功能。
+
+<hr>
+默认值：
+JS Code:
+<pre>
+	<code class="json">
+{
+	data:[],//格式:{id:数字,name:文本,screen:筛选文本}
+	data_:[],//附加标签（按钮）数据
+	dataAttr:[],//因数据格式不同，这里填写三个分别对应要展现的 id name screen 属性的对应属性。如填写则必须填写3个
+	//defaultData:[],//默认的数据，内容为data.id
+	tagInputCSS:"sTags-input",//输入框css
+	tagListCSS:"sTags",//列表css
+	tagCSS:["sTags-old","sTags-new"],//输入框内标签样式，第一个为默认标签样式，第二个为新增标签样式
+	color:1,//标签列表颜色，0不使用，1按screen的首字母，按顺序循环数组内颜色，2随机颜色，数组内颜色，值0为背景色，1为字色
+	colorData:[
+		["#90c5f0","#fff"],
+		["#8E388E","#fff"],
+		["#FFA500","#fff"],
+		["#FBF","#fff"],
+		["#DA70D6","#fff"],
+		["#A2CD5A","#fff"],
+		["#228B22","#fff"],
+		["#CDC0B0","#fff"],
+		["#CD7054","#fff"],
+		["#00688B","#fff"]
+		],//标签列表颜色，0不使用，1按screen的首字母，按顺序循环数组内颜色，2随机颜色，数组内颜色，值0为背景色，1为字色
+	screen:true,//是否启用筛选功能
+	screenInput:{
+				type:"text",
+				size:8,
+				placeholder:"筛选"
+			},//筛选输入框属性,
+	tagTXT:"Tags:",//标签列表前缀
+	click:function(e){
+		console.log(e.attr("tagid"))
+	},//当目标元素为div时，列表的点击事件。e为点击元素自身
+	tagName:"",//标签列表使用的html标签，默认为div，如要改为div和a之外的其他标签则需要修改css
+	tagHtml:"",//自定义标签列表中的html内容。{name} 替换为 tag.name {id}将转换为 tag.id,
+	tagAttr:{}//标签属性
+}
+	</code>
+</pre>	
+
+<hr>
+配置值详细说明
+JS Code:
+<pre>
+	<code >
+	data:标签数据：数组 --必填项
+		格式例子：[{id:1,name:"sdd",screen:"sdd"},{id:2,name:"ggf",screen:"ggf"}]
+		--div标签，当作用于div标签时，还可对每个标签添加单独的点击事件
+		{
+			id:1,
+			name:"sdd",
+			screen:"sdd",
+			fn:function(e){//e为点击元素自身
+				console.log(e.tagid)
+			}
+		}
+
+	data_:附加标签数据，该数据将会显示在标签列表最后，以标签形式显示，作为单纯的按钮功能，不受标签、筛选和tagid限制。
+		[
+			{
+				name:"",//标签名
+				position:0,//插入位置：0最后插入，非零最前插入
+				fn:function(){ //点击事件
+					console.log("button1 event")
+				}
+			}
+		]
+
+	dataAttr：数据值添加：数组
+		原有数据可能不会适应本插件，这里是为了补全本插件所用的数据
+		如原有数据可能是，{index:1,title:"标题一",pinyin:"bt1"}
+		那么为了能够让本插件正确使用这些数据，dataAttr的属性就应该填写["index","title","pinyin"]
+		注意，要按照顺序填写
+		index对应id
+		title对应name
+		pinyind对应screen
+
+	defaultData:默认标签：数组 
+		存放标签数据中的id的值
+		当input标签中有数据是会替换本数值并转为数组
+		数据例子：[1,2,3]
+		--input标签
+			当作用于input标签时，将会将默认值的标签填入标签编辑框
+		--div标签
+			当作用于div标签时，将不再显示所有标签而改为仅显示默认标签
+	
+	tagInputCSS:标签编辑框CSS样式：字符串  -- input标签有效
+		默认值：sTags-input
+	
+	tagListCSS:待选标签列表CSS样式：字符串 
+		默认值：sTags
+
+	tagCSS:标签编辑框内的标签的CSS样式：数组  -- input标签有效
+		默认值：["sTags-old","sTags-new"]
+		数据0表示 defaultData（默认标签数据的样式）
+		数据1表示 本次编辑新增加的标签的样式
+	
+	screen：标签列表筛选功能是否启用:bool值
+		默认值：true
+		该功能针对标签数据的screen，如果关闭该功能则忽略screen的数据。
+
+	screenInput：筛选输入框属性：json
+		默认值:{
+					type:"text",
+					size:8,
+					placeholder:"筛选"
+				}
+
+	tagTXT：标签列表的前缀字符：字符串
+
+	click:标签列表的点击事件 -- 当标签应用于div时有效  -- div标签有效
+		例子：click:function(e){
+			console.log(e.attr("gatid"),e.text())
+		}
+
+	color:标签列表颜色开关：数字
+			--0:关闭
+			--1:按screen首字符切换colorData内容
+				要使用该功能，请将标签数据按照screen排序
+				该功能要开启screen才有效
+			--2:随机使用colorData内容
+	colorData:要应用的标签列表的颜色数据：二维数组
+			olorData[x][0]:标签背景色
+			olorData[x][1]:标签字色
+
+	</code>
+</pre>	
+
+<script type="text/javascript">
+	var tagsdata=[]
+	tagsdata.push({id:1,name:"PHP",screen:"php"})
+	tagsdata.push({id:4,name:"C#",screen:"c"})
+	tagsdata.push({id:6,name:"JavaScript",screen:"javascript"})
+	tagsdata.push({id:2,name:"HTML5",screen:"html5"})
+	tagsdata.push({id:3,name:"Python",screen:"python"})
+	tagsdata.push({id:5,name:"数据库",screen:"sjk"})
+	tagsdata.push({id:7,name:"服务器",screen:"fwq"})
+
+
+	$("#demo1").sTags({
+		data:tagsdata,
+	})
+
+	$("#demo2").sTags({
+		data:tagsdata,
+		color:2
+	})
+	$("#demo3").sTags({
+		defaultData:[1,3,2],
+		data:tagsdata,
+		colro:[0]
+
+	})
+	$("#demo4").sTags({
+		data:tagsdata,
+	})
+	$("#demo5").sTags({
+		defaultData:[1,3,2],
+		data:tagsdata,
+		screen:false,
+	})
+
+	var tagsdata1=[]
+	tagsdata1.push({id:1,name:"恐怖片",py:"kbp"})
+	tagsdata1.push({id:4,name:"科幻片",py:"khp"})
+	tagsdata1.push({id:6,name:"爱情片",py:"aqp"})
+	tagsdata1.push({id:2,name:"战争片",py:"zzp"})
+	tagsdata1.push({id:3,name:"动作片",py:"dzp"})
+	tagsdata1.push({id:5,name:"动画片",py:"dhp"})
+	tagsdata1.push({id:7,name:"喜剧片",py:"xjp"})
+
+	$("#demo6").sTags({
+		data:tagsdata1,
+		screen:false,
+		tagHtml:"{name}-{id}",
+		click:function(e){
+			alert(e.attr("tagid"))
+		},
+	})
+
+	$("#demo7").sTags({
+		screen:false,
+		dataAttr:["id","name","py"],
+		data:tagsdata1,
+		tagName:"a",
+		tagAttr:{
+			href:"/tag/{id}",
+			target:"_blank"
+		}
+	})
+
+	tagsdata.push({id:8,name:"独立按钮",screen:"cas",fn:function(){console.log("单独的事件")}})
+
+	$("#demo8").sTags({
+		data:tagsdata,
+		color:1,
+		screen:false,
+		data_:[
+			{
+				name:"前排插入标签",
+				position:1,
+				fn:function(){
+					console.log("前排插入标签 事件")
+				}
+			},
+			{
+				name:"后排插入标签",
+				position:0,
+				fn:function(){
+					console.log("后排插入标签 事件")
+				}
+			}
+		]
+
+	})
+
+</script>
+
+</body>
+</html>

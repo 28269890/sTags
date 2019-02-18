@@ -1,0 +1,38 @@
+.sTags-input{
+	border: 1px solid #ccc;
+	height: 100px;
+}
+.sTags-input>div{
+	display: inline-block;
+	padding: 5px 5px 5px 12px;
+	margin: 2px;
+	border-radius: 2px;
+
+}
+.sTags-input>div>a{
+	display: inline-block;
+	margin: 0 7px;
+	color: #ddd;
+	cursor: pointer;
+}
+.sTags{
+	margin: 10px 0;
+}
+.sTags-old{
+	color: #fff;
+	background: #A2A;
+}
+.sTags-new{
+	color: #fff;
+	background: #A2CD5A;
+}
+.sTags>div,
+.sTags>a{
+	cursor: pointer;
+	display: inline-block;
+	padding: 5px 12px;
+	margin: 2px;
+	border-radius: 2px;
+	color: #fff;
+	background: #A2CD5A;
+}
