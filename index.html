@@ -19,29 +19,71 @@ hr{
 <script src="jquery.sTags.js"></script>
 </head>
 <body>
+CSS：
+<pre>
+	<code class="css">
+.sTags-input{
+	border: 1px solid #ccc;
+	height: 100px;
+}
+.sTags-input>div{
+	display: inline-block;
+	padding: 5px 5px 5px 12px;
+	margin: 2px;
+	border-radius: 2px;
+
+}
+.sTags-input>div>a{
+	display: inline-block;
+	margin: 0 7px;
+	color: #ddd;
+	cursor: pointer;
+}
+.sTags{
+	margin: 10px 0;
+}
+.sTags-old{
+	color: #fff;
+	background: #A2A;
+}
+.sTags-new{
+	color: #fff;
+	background: #A2CD5A;
+}
+.sTags>div,
+.sTags>a{
+	cursor: pointer;
+	display: inline-block;
+	padding: 5px 12px;
+	margin: 2px;
+	border-radius: 2px;
+	color: #fff;
+	background: #A2CD5A;
+}
+	</code>
+</pre>	
+<hr>
 标签数据：
 <pre>
 	<code class="javascript">
-		var tagsdata=[]
-		tagsdata.push({id:1,name:"PHP",screen:"php"})
-		tagsdata.push({id:4,name:"C#",screen:"c"})
-		tagsdata.push({id:6,name:"JavaScript",screen:"javascript"})
-		tagsdata.push({id:2,name:"HTML5",screen:"html5"})
-		tagsdata.push({id:3,name:"Python",screen:"python"})
-		tagsdata.push({id:5,name:"数据库",screen:"sjk"})
-		tagsdata.push({id:7,name:"服务器",screen:"fwq"})
+var tagsdata=[]
+tagsdata.push({id:1,name:"PHP",screen:"php"})
+tagsdata.push({id:4,name:"C#",screen:"c"})
+tagsdata.push({id:6,name:"JavaScript",screen:"javascript"})
+tagsdata.push({id:2,name:"HTML5",screen:"html5"})
+tagsdata.push({id:3,name:"Python",screen:"python"})
+tagsdata.push({id:5,name:"数据库",screen:"sjk"})
+tagsdata.push({id:7,name:"服务器",screen:"fwq"})
 
 
-		var tagsdata1=[]
-		tagsdata1.push({id:1,name:"恐怖片",py:"kbp"})
-		tagsdata1.push({id:4,name:"科幻片",py:"khp"})
-		tagsdata1.push({id:6,name:"爱情片",py:"aqp"})
-		tagsdata1.push({id:2,name:"战争片",py:"zzp"})
-		tagsdata1.push({id:3,name:"动作片",py:"dzp"})
-		tagsdata1.push({id:5,name:"动画片",py:"dhp"})
-		tagsdata1.push({id:7,name:"喜剧片",py:"xjp"})
-	</code>
-
+var tagsdata1=[]
+tagsdata1.push({id:1,name:"恐怖片",py:"kbp"})
+tagsdata1.push({id:4,name:"科幻片",py:"khp"})
+tagsdata1.push({id:6,name:"爱情片",py:"aqp"})
+tagsdata1.push({id:2,name:"战争片",py:"zzp"})
+tagsdata1.push({id:3,name:"动作片",py:"dzp"})
+tagsdata1.push({id:5,name:"动画片",py:"dhp"})
+tagsdata1.push({id:7,name:"喜剧片",py:"xjp"})
 	</code>
 </pre>	
 <hr>
@@ -54,7 +96,7 @@ JS Code:
 	})
 	</code>
 </pre>	
-HTML Code:
+
 
 
 <input type="text" id="demo1">
@@ -163,8 +205,9 @@ JS Code:
 		data:tagsdata,
 		dataAttr:["id","name","py"],
 		screen:false,
-		a:{
-			href:"",
+		tagName:"a",
+		tagAttr:{
+			href:"/tag/{id}",
 			target:"_blank"
 		}
 	})
