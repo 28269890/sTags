@@ -2,6 +2,8 @@
 	jQuery 标签插件 	ver 0.1
 
 	https://github.com/28269890/sTags
+
+	DEMO:https://28269890.github.io/sTags/
 */
 
 (function($){
@@ -28,7 +30,7 @@
 			o.tagName = "div"
 		}
 
-		var inputdiv=$('<div/>',{//定义绑定输入框的div 即 标签输入框
+		var inputDiv=$('<div/>',{//定义绑定输入框的div 即 标签输入框
 			class:o.tagInputCSS,
 			"tag-id":id
 		})
@@ -84,26 +86,35 @@
 								color = o.colorData[color_i]
 							}
 						}
-						attr.style="background:"+color[0]+";color:"+color[1]
+						attr.style="background:"+color[0]+";color:"+color[1]+";"
 					}
 
 					if(o.color==2){//随机换色
 						color = o.colorData[Math.floor(Math.random()*o.colorData.length)]
-						attr.style="background:"+color[0]+";color:"+color[1]
+						attr.style="background:"+color[0]+";color:"+color[1]+";"
 					}
 					
+					
+					if(this_.prop("tagName")=="DIV" && (typeof(o.data[i].fn)!="function" && typeof(o.click)!="function") && o.tagName != "a"){//鼠标形态
+						attr.style+="cursor:default;"
+					}
+					
+
 					var E =	$("<"+o.tagName+"/>",attr)
 					if(o.tagHtml){
 						E.html(o.tagHtml.replace('{name}',o.data[i].name).replace('{id}',o.data[i].id))
 					}else{
 						E.html('<span>'+o.data[i].name+'</span>')
 					}
+
 					E.data("fn",o.data[i].fn)
+
 					E.click(function(){
 						if(this_.prop("tagName")=="DIV"){
 							if(typeof($(this).data("fn")) =="function"){
 								$(this).data("fn")($(this))
-							}else{
+							}
+							if(typeof(o.click)=="function"){
 								o.click($(this))
 							}
 						}
@@ -172,7 +183,7 @@
 
 			$(this).hide();
 			$(this).after(tagList)
-			$(this).after(inputdiv)
+			$(this).after(inputDiv)
 
 			var addtag = function(e){ //向标签输入框中添加标签
 				var val = this_.val();//获取当前值
@@ -270,9 +281,7 @@
 					placeholder:"筛选"
 				},//筛选输入框属性,
 		tagTXT:"Tags:",//标签列表前缀
-		click:function(e){
-			console.log(e.attr("tagid"))
-		},//当目标元素为div时，列表的点击事件。e为点击元素自身
+		//click:function(e){console.log(e.attr("tagid"))},//当目标元素为div时，列表的点击事件。e为点击元素自身
 		tagName:"",//标签列表使用的html标签，默认为div，如要改为div和a之外的其他标签则需要修改css
 		tagHtml:"",//自定义标签列表中的html内容。{name} 替换为 tag.name {id}将转换为 tag.id,
 		tagAttr:{}//标签属性
