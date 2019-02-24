@@ -63,27 +63,27 @@ CSS：
 	</code>
 </pre>	
 <hr>
-标签数据：
+Demo标签数据：
 <pre>
 	<code class="javascript">
-var tagsdata=[]
-tagsdata.push({id:1,name:"PHP",screen:"php"})
-tagsdata.push({id:4,name:"C#",screen:"c"})
-tagsdata.push({id:6,name:"JavaScript",screen:"javascript"})
-tagsdata.push({id:2,name:"HTML5",screen:"html5"})
-tagsdata.push({id:3,name:"Python",screen:"python"})
-tagsdata.push({id:5,name:"数据库",screen:"sjk"})
-tagsdata.push({id:7,name:"服务器",screen:"fwq"})
+var TagsData=[]
+TagsData.push({id:1,name:"PHP",screen:"php"})
+TagsData.push({id:4,name:"C#",screen:"c"})
+TagsData.push({id:6,name:"JavaScript",screen:"javascript"})
+TagsData.push({id:2,name:"HTML5",screen:"html5"})
+TagsData.push({id:3,name:"Python",screen:"python"})
+TagsData.push({id:5,name:"数据库",screen:"sjk"})
+TagsData.push({id:7,name:"服务器",screen:"fwq"})
 
 
-var tagsdata1=[]
-tagsdata1.push({id:1,name:"恐怖片",py:"kbp"})
-tagsdata1.push({id:4,name:"科幻片",py:"khp"})
-tagsdata1.push({id:6,name:"爱情片",py:"aqp"})
-tagsdata1.push({id:2,name:"战争片",py:"zzp"})
-tagsdata1.push({id:3,name:"动作片",py:"dzp"})
-tagsdata1.push({id:5,name:"动画片",py:"dhp"})
-tagsdata1.push({id:7,name:"喜剧片",py:"xjp"})
+var TagsData1=[]
+TagsData1.push({id:1,name:"恐怖片",py:"kbp"})
+TagsData1.push({id:4,name:"科幻片",py:"khp"})
+TagsData1.push({id:6,name:"爱情片",py:"aqp"})
+TagsData1.push({id:2,name:"战争片",py:"zzp"})
+TagsData1.push({id:3,name:"动作片",py:"dzp"})
+TagsData1.push({id:5,name:"动画片",py:"dhp"})
+TagsData1.push({id:7,name:"喜剧片",py:"xjp"})
 	</code>
 </pre>	
 <hr>
@@ -91,15 +91,13 @@ tagsdata1.push({id:7,name:"喜剧片",py:"xjp"})
 JS Code:
 <pre>
 	<code class="javascript">
-	$("#demo1").sTags({
-		data:tagsdata,
+	$("#DemoInput1").sTags({
+		data:TagsData,
 	})
 	</code>
 </pre>	
-
-
-
-<input type="text" id="demo1">
+<input type="text" id="DemoInput1">
+目的：改变INPUT的值
 
 
 
@@ -110,13 +108,17 @@ JS Code:
 JS Code:
 <pre>
 	<code class="javascript">
-	$("#demo2").sTags({
-		data:tagsdata,
+	$("#DemoInput2").sTags({
+		defaultData:[1,3,2],
+		data:TagsData,
 		colro:2
 	})
 	</code>
 </pre>	
-<input type="text" id="demo2" value="2,3">
+<input type="text" id="DemoInput2" value="2,3">
+目的：改变INPUT的值<br>
+标签内有默认值，设定的默认值将失效。
+
 
 
 
@@ -126,15 +128,16 @@ JS Code:
 JS Code:
 <pre>
 	<code class="javascript">
-	$("#demo3").sTags({
+	$("#DemoInput3").sTags({
 		defaultData:[1,3,2],
-		data:tagsdata,
+		data:TagsData,
 		colro:[0]
 
 	})
 	</code>
 </pre>	
-<input type="text" id="demo3" value="">
+<input type="text" id="DemoInput3" value="">
+目的：改变INPUT的值
 
 
 
@@ -145,15 +148,16 @@ JS Code:
 JS Code:
 <pre>
 	<code class="javascript">
-	$("#demo4").sTags({
-		data:tagsdata,
+	$("#DemoDiv1").sTags({
+		data:TagsData,
+		click:function(e){
+			alert(e.attr("tagid"))
+		},
 	})
 	</code>
 </pre>	
-<div id="demo4"></div>
-
-
-
+<div id="DemoDiv1"></div>
+目的：在DIV中列出所有标签
 
 
 <hr>
@@ -161,28 +165,28 @@ JS Code:
 JS Code:
 <pre>
 	<code class="javascript">
-	$("#demo5").sTags({
+	$("#DemoDiv2").sTags({
 		defaultData:[1,3,2],
-		data:tagsdata,
+		data:TagsData,
 		screen:false
 	})
 	</code>
 </pre>	
-<div id="demo5"></div>
+<div id="DemoDiv2"></div>
+作用于DIV上时的，默认值功能演示。<br>
 
 
 
 
 
 <hr>
-<h1>DEMO div 3:自定义标签 自定义事件</h1>
-默认情况下标签是以div标签包裹span标签内包裹标签名，自定义则改变div标签内的包裹内容。
+<h1>DEMO div 3:自定义标签</h1>
+默认情况下标签是以div标签包裹span标签内包裹标签名，自定义则改变div标签内的包裹内容。<br>
 JS Code:
 <pre>
 	<code class="javascript">
-	$("#demo6").sTags({
-		defaultData:[1,3,2],
-		data:tagsdata1,
+	$("#DemoDiv3").sTags({
+		data:TagsData1,
 		tagHtml:"{name}-{id}",
 		click:function(e){
 			alert(e.attr("tagid"))
@@ -190,19 +194,18 @@ JS Code:
 	})
 	</code>
 </pre>	
-<div id="demo6"></div>
-数据中无筛选项目，按筛选内容改变颜色无效
+<div id="DemoDiv3"></div>
+作用于DIV上时的，自定义标签内容的演示。<br>
 
 
 <hr>
 <h1>DEMO div 4:改为链接 补充数据</h1>
-默认情况下标签是元素是div，可将其改为链接标签a。
+默认情况下标签是元素是div，可将其改为链接标签a。<br>
 JS Code:
 <pre>
 	<code class="javascript">
-	$("#demo7").sTags({
-		defaultData:[1,3,2],
-		data:tagsdata,
+	$("#DemoDiv4").sTags({
+		data:TagsData,
 		dataAttr:["id","name","py"],
 		screen:false,
 		tagName:"a",
@@ -213,8 +216,10 @@ JS Code:
 	})
 	</code>
 </pre>	
-<div id="demo7"></div>
-原始数据的数据与本插件的数据格式不符，缺少screen属性。<br>原始数据中的py数据也可作为screen数据，则在设置中添加  dataAttr:["id","name","py"]
+<div id="DemoDiv4"></div>
+不同的数据处理演示、改变标签属性的演示<br>
+原始数据的数据与本插件的数据格式不符，缺少screen属性。<br>
+原始数据中的py数据也可作为screen数据，则在设置中添加  dataAttr:["id","name","py"] <br>
 
 
 <hr>
@@ -222,11 +227,10 @@ JS Code:
 JS Code:
 <pre>
 	<code class="javascript">
-	tagsdata.push({id:8,name:"独立按钮",screen:"cas",fn:function(){console.log("单独的事件")}})
+	TagsData.push({id:8,name:"独立按钮",screen:"cas",fn:function(){console.log("单独的事件")}})
 
-	$("#demo8").sTags({
-		defaultData:[1,3,2],
-		data:tagsdata,
+	$("#DemoDiv5").sTags({
+		data:TagsData,
 		screen:false
 		data_:[
 			{
@@ -248,8 +252,8 @@ JS Code:
 	})
 	</code>
 </pre>	
-<div id="demo8"></div>
-
+<div id="DemoDiv5"></div>
+标签附加数据演示、标签独立事件演示。<br>
 标签数据中还可以有独立的事件：fn属性。数据中如有该属性，将替换默认功能。
 
 <hr>
@@ -384,50 +388,55 @@ JS Code:
 </pre>	
 
 <script type="text/javascript">
-	var tagsdata=[]
-	tagsdata.push({id:1,name:"PHP",screen:"php"})
-	tagsdata.push({id:4,name:"C#",screen:"c"})
-	tagsdata.push({id:6,name:"JavaScript",screen:"javascript"})
-	tagsdata.push({id:2,name:"HTML5",screen:"html5"})
-	tagsdata.push({id:3,name:"Python",screen:"python"})
-	tagsdata.push({id:5,name:"数据库",screen:"sjk"})
-	tagsdata.push({id:7,name:"服务器",screen:"fwq"})
+	var TagsData=[]
+	TagsData.push({id:1,name:"PHP",screen:"php"})
+	TagsData.push({id:4,name:"C#",screen:"c"})
+	TagsData.push({id:6,name:"JavaScript",screen:"javascript"})
+	TagsData.push({id:2,name:"HTML5",screen:"html5"})
+	TagsData.push({id:3,name:"Python",screen:"python"})
+	TagsData.push({id:5,name:"数据库",screen:"sjk"})
+	TagsData.push({id:7,name:"服务器",screen:"fwq"})
+
+	var TagsData1=[]
+	TagsData1.push({id:1,name:"恐怖片",py:"kbp"})
+	TagsData1.push({id:4,name:"科幻片",py:"khp"})
+	TagsData1.push({id:6,name:"爱情片",py:"aqp"})
+	TagsData1.push({id:2,name:"战争片",py:"zzp"})
+	TagsData1.push({id:3,name:"动作片",py:"dzp"})
+	TagsData1.push({id:5,name:"动画片",py:"dhp"})
+	TagsData1.push({id:7,name:"喜剧片",py:"xjp"})
 
 
-	$("#demo1").sTags({
-		data:tagsdata,
+	$("#DemoInput1").sTags({
+		data:TagsData,
 	})
 
-	$("#demo2").sTags({
-		data:tagsdata,
+	$("#DemoInput2").sTags({
+		defaultData:[1,3,2],
+		data:TagsData,
 		color:2
 	})
-	$("#demo3").sTags({
+	$("#DemoInput3").sTags({
 		defaultData:[1,3,2],
-		data:tagsdata,
+		data:TagsData,
 		colro:[0]
 
 	})
-	$("#demo4").sTags({
-		data:tagsdata,
+	$("#DemoDiv1").sTags({
+		data:TagsData,
+		click:function(e){
+			alert(e.attr("tagid"))
+		},
 	})
-	$("#demo5").sTags({
+	$("#DemoDiv2").sTags({
 		defaultData:[1,3,2],
-		data:tagsdata,
+		data:TagsData,
 		screen:false,
 	})
 
-	var tagsdata1=[]
-	tagsdata1.push({id:1,name:"恐怖片",py:"kbp"})
-	tagsdata1.push({id:4,name:"科幻片",py:"khp"})
-	tagsdata1.push({id:6,name:"爱情片",py:"aqp"})
-	tagsdata1.push({id:2,name:"战争片",py:"zzp"})
-	tagsdata1.push({id:3,name:"动作片",py:"dzp"})
-	tagsdata1.push({id:5,name:"动画片",py:"dhp"})
-	tagsdata1.push({id:7,name:"喜剧片",py:"xjp"})
 
-	$("#demo6").sTags({
-		data:tagsdata1,
+	$("#DemoDiv3").sTags({
+		data:TagsData1,
 		screen:false,
 		tagHtml:"{name}-{id}",
 		click:function(e){
@@ -435,10 +444,10 @@ JS Code:
 		},
 	})
 
-	$("#demo7").sTags({
+	$("#DemoDiv4").sTags({
 		screen:false,
 		dataAttr:["id","name","py"],
-		data:tagsdata1,
+		data:TagsData1,
 		tagName:"a",
 		tagAttr:{
 			href:"/tag/{id}",
@@ -446,10 +455,10 @@ JS Code:
 		}
 	})
 
-	tagsdata.push({id:8,name:"独立按钮",screen:"cas",fn:function(){console.log("单独的事件")}})
+	TagsData.push({id:8,name:"独立按钮",screen:"cas",fn:function(){console.log("单独的事件")}})
 
-	$("#demo8").sTags({
-		data:tagsdata,
+	$("#DemoDiv5").sTags({
+		data:TagsData,
 		color:1,
 		screen:false,
 		data_:[
