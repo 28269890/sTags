@@ -1,67 +1,55 @@
 /*
-	jQuery 标签插件 	ver 0.1
+	jQuery 标签插件 	ver 0.2
 
 	https://github.com/28269890/sTags
 
-	DEMO:https://28269890.github.io/sTags/
+	Demo:https://28269890.github.io/sTags/
 */
 
 (function($){
-	$.fn.sTags = function(options){
-		var o = $.extend({}, $.fn.sTags.defaults,options);
-		var id = Date.now()+""+Math.ceil(Math.random()*1000);
-		var this_ = $(this);
+	$.fn.sTagsCtrl = function(ctrl){
+		var t = $(this)
+		var id = t.attr("tagid")
+		if(id === undefined){
+			return;
+		}
+		var o = t.data("sTipsSetOptions")
+		var tagInputE = $("[tag-id="+id+"]")
+		var tagListE = $("[tag-list-id="+id+"]")
+		
+		var color = 0 //颜色内容
+		var color_i = 0 //颜色计数
+		var color_s = ""  //按筛选内容的首字母换色，保存首字母内容
 
-		if(o.dataAttr.length==3){//设定数据属性
-			for(var i in o.data){
-				if(!o.data[i].id){
-					o.data[i].id = o.data[i][o.dataAttr[0]]
-				}
-				if(!o.data[i].name){
-					o.data[i].name = o.data[i][o.dataAttr[1]]
-				}
-				if(!o.data[i].screen){
-					o.data[i].screen = o.data[i][o.dataAttr[2]]
+		var removeArray=function(array,val){
+			for (var i = 0; i < array.length; i++) {
+				if (array[array.length-i-1] == val){
+					array.splice(array.length-i-1, 1);
 				}
 			}
 		}
 
-		if(o.tagName==""){
-			o.tagName = "div"
-		}
-
-		var inputDiv=$('<div/>',{//定义绑定输入框的div 即 标签输入框
-			class:o.tagInputCSS,
-			"tag-id":id
-		})
-		var tagList=$('<div/>',{//定义选择数据的div
-			class:o.tagListCSS,
-			"tag-list-id":id
-		})
-
-		var list = function(target){//列出数据 target目标div指 定义选择数据的div
+		function list(){//列出数据 target目标div指 定义选择数据的div
+			tagListE.html("")
 			if(o.screen){//如果启用筛选
 				//定义筛选框
 				$("<input>",o.screenInput).keyup(function(){
-					var skey = $(this).val().replace(/[^a-zA-Z]/g,"")
+					var skey = t.val().replace(/[^a-zA-Z]/g,"")
 					if(skey==""){
-						$(target+">"+o.tagName+"[screen]").show()
+						tagListE.children(o.tagName+"[screen]").show()
 					}else{
-						$(target+">"+o.tagName+"[screen]").hide()
-						$(target+">"+o.tagName+"[screen^='"+skey+"']").show()
+						tagListE.children(o.tagName+"[screen]").hide()
+						tagListE.children(o.tagName+"[screen^='"+skey+"']").show()
 					}
-				}).appendTo(target)
+				}).appendTo(tagListE)
 			}
 
-			var color = 0 //颜色内容
-			var color_i = 0 //颜色计数
-			var color_s = ""  //按筛选内容的首字母换色，保存首字母内容
 		
 			if(o.data.length>0){//如果有标签数据
 
 				for(var i in o.data){//循环标签数据
 
-					var attr = {}
+					var attr = {} //标签列表的属性
 					for(var j in o.tagAttr){
 						attr[j] = o.tagAttr[j].replace('{name}',o.data[i].name).replace('{id}',o.data[i].id)
 					}
@@ -86,31 +74,23 @@
 								color = o.colorData[color_i]
 							}
 						}
-						attr.style="background:"+color[0]+";color:"+color[1]+";"
+						attr.style="background:"+color[0]+";color:"+color[1]
 					}
 
 					if(o.color==2){//随机换色
 						color = o.colorData[Math.floor(Math.random()*o.colorData.length)]
-						attr.style="background:"+color[0]+";color:"+color[1]+";"
+						attr.style="background:"+color[0]+";color:"+color[1]
 					}
 					
-					
-					if(this_.prop("tagName")=="DIV" && (typeof(o.data[i].fn)!="function" && typeof(o.click)!="function") && o.tagName != "a"){//鼠标形态
-						attr.style+="cursor:default;"
-					}
-					
-
 					var E =	$("<"+o.tagName+"/>",attr)
 					if(o.tagHtml){
 						E.html(o.tagHtml.replace('{name}',o.data[i].name).replace('{id}',o.data[i].id))
 					}else{
 						E.html('<span>'+o.data[i].name+'</span>')
 					}
-
 					E.data("fn",o.data[i].fn)
-
 					E.click(function(){
-						if(this_.prop("tagName")=="DIV"){
+						if(t.prop("tagName")=="DIV"){
 							if(typeof($(this).data("fn")) =="function"){
 								$(this).data("fn")($(this))
 							}
@@ -118,14 +98,14 @@
 								o.click($(this))
 							}
 						}
-						if(this_.prop("tagName")=="INPUT"){
+						if(t.prop("tagName")=="INPUT"){
 							addtag($(this))
 						}
 					})
-
-					E.appendTo(target)
+					E.appendTo(tagListE)
 				}
 			}
+
 
 			for(var i in o.data_){ //附加标签 作为按钮来使用
 				var attr = {}
@@ -150,19 +130,119 @@
 					}
 				})
 				if(o.data_[i].position){
-					div.prependTo(target)
+					div.prependTo(tagListE)
 				}else{
-					div.appendTo(target)
+					div.appendTo(tagListE)
 				}
 			}
+		}
 
-			$(target).prepend(o.tagTXT)//添加标签文本
+		function addtag(e){ //向标签输入框中添加标签
+			var val = Number(e.attr("tagid"));//获取选中值
+			
+			if(o.defaultData.indexOf(val) > -1){ //如果当前值已存在点击值
+				return false
+			}
+			o.defaultData.push(val) //将点击值添加到当前值中
+			if(o.defaultVal.indexOf(val) == -1){//如果原始值中不包含选中值，则在新增值中加入选中值
+				o.addVal.push(val)
+			}
+			
+			removeArray(o.removeVal,val)
+			
+
+			t.val(o.defaultData.join(","))//修改当前值
+
+
+			var cls = $("<a>x</a>").click(function(){
+				deltag($(this))
+			})//删除标签
+
+			var newtag = $('<div><span>'+e.text()+'</span></div>')
+				.attr("tagid",e.attr("tagid"))
+				.append(cls)//向标签输入框中添加的新标签。
+
+			if(Array.isArray(o.defaultVal)){//如果默认值是数组
+				if(o.defaultVal.indexOf(Number(e.attr("tagid"))) > -1){//如果默认值中包含该值
+					newtag.attr("class",o.tagCSS[0]) //添加默认值样式
+				}else{
+					newtag.attr("class",o.tagCSS[1]) //添加新值样式
+				}				
+			}else{
+				newtag.attr("class",o.tagCSS[1]) //添加新值样式
+			}
+
+			newtag.appendTo("[tag-id="+id+"]") //将新标签放入 标签输入框中。
 
 		}
 
+		function deltag(e){
+			var tag = e.parent()
+			var val = Number(tag.attr("tagid"));
+			removeArray(o.defaultData,val)
 
-		if($(this).prop("tagName")=="DIV"){//如果作用于div标签。
-			$(this)
+			if(o.defaultVal.indexOf(val) > -1){//如果原始值中不包含选中值，则在新增值中加入选中值
+				o.removeVal.push(val)
+			}
+			
+			removeArray(o.addVal,val)
+
+			t.val(o.defaultData.join(","))//修改当前值
+			tag.remove()
+		}
+		
+		if(ctrl=="ShowList"){
+			list()
+		}
+
+		if(ctrl=="destroy"){
+			if(t.prop("tagName")=="Input"){//如果作用于div标签。
+				tagInputE.remove()
+				tagListE.remove()
+				t.show()
+			}
+			if(t.prop("tagName")=="DIV"){//如果作用于div标签。
+				t.html("")
+				t.removeClass(o.tagListCSS)
+			}
+		}
+	}
+
+
+	$.fn.sTags = function(options){
+		var t = $(this);
+		if(t.attr("tagid")===undefined){
+			var o = $.extend({}, $.fn.sTags.defaults,options);
+			var id = Date.now()+""+Math.ceil(Math.random()*1000);
+			o.addVal=[]
+			o.defaultVal=[]
+			o.removeVal=[]
+			t.attr("tagid",id)
+			t.data("sTipsSetOptions",o)
+		}
+		
+
+		if(o.dataAttr.length==3){//设定数据属性
+			for(var i in o.data){
+				if(!o.data[i].id){
+					o.data[i].id = o.data[i][o.dataAttr[0]]
+				}
+				if(!o.data[i].name){
+					o.data[i].name = o.data[i][o.dataAttr[1]]
+				}
+				if(!o.data[i].screen){
+					o.data[i].screen = o.data[i][o.dataAttr[2]]
+				}
+			}
+		}
+
+		if(!o.tagName){
+			o.tagName = "div"
+		}
+
+
+		if(t.prop("tagName")=="DIV"){//如果作用于div标签。
+			t
 				.attr("tag-list-id",id)
 				.addClass(o.tagListCSS)
 			var newarr = [];
@@ -176,81 +256,43 @@
 				}
 				o.data = newarr
 			}
-			list("[tag-list-id="+id+"]")
+			t.sTagsCtrl("ShowList")
 		}
 
-		if($(this).prop("tagName")=="INPUT"){ //如果作用域输入框
+		if(t.prop("tagName")=="INPUT"){ //如果作用域输入框
 
-			$(this).hide();
-			$(this).after(tagList)
-			$(this).after(inputDiv)
+			var inputdiv=$('<div/>',{//定义绑定输入框的div 即 标签输入框
+				class:o.tagInputCSS,
+				"tag-id":id
+			})
+			var tagList=$('<div/>',{//定义选择数据的div
+				class:o.tagListCSS,
+				"tag-list-id":id
+			})
 
-			var addtag = function(e){ //向标签输入框中添加标签
-				var val = this_.val();//获取当前值
-				if(val==""){ //将当前值处理为数组
-					val=[];
-				}else{
-					val = val.split(",")
-				}
+			t.hide();
+			t.after(tagList)
+			t.after(inputdiv)
 
-				val = val.map(Number)
-				
-				if(val.indexOf(Number(e.attr("tagid"))) > -1){ //如果当前值已存在点击值
-					return false
-				}
+			t.sTagsCtrl("ShowList")
 
-				val.push(e.attr("tagid")) //将点击值添加到当前值中
-
-				this_.val(val.join(","))//修改当前值
-
-				var cls = $("<a>x</a>").click(function(){
-					deltag($(this))
-				})//删除标签
-
-				var newtag = $('<div><span>'+e.text()+'</span></div>')
-					.attr("tagid",e.attr("tagid"))
-					.append(cls)//向标签输入框中添加的新标签。
-
-				if(Array.isArray(o.defaultData)){//如果默认值是数组
-					if(o.defaultData.indexOf(Number(e.attr("tagid"))) > -1){//如果默认值中包含该值
-						newtag.attr("class",o.tagCSS[0]) //添加默认值样式
-					}else{
-						newtag.attr("class",o.tagCSS[1]) //添加新值样式
-					}				
-				}else{
-					newtag.attr("class",o.tagCSS[1]) //添加新值样式
-				}
-
-				newtag.appendTo("[tag-id="+id+"]") //将新标签放入 标签输入框中。
-
-			}
-			
-			var deltag = function(e){
-				var tag = e.parent()
-				var val = this_.val();
-				var re = new RegExp("([^\d]?)"+tag.attr("tagid")+"([^\d]?)","g")
-				val = val.replace(/[^\d,]/).replace(re,"$1$2").replace(/,,/,",").replace(/^,/,"").replace(/,$/,"")
-				this_.val(val)
-				tag.remove()
-			}
-
-			list("[tag-list-id="+id+"]")
-
-			if(this_.val()){ //处理默认值
-				o.defaultData = this_.val().split(",")
-				this_.val("")
-			}
-
+			var tempData = []
 			if(Array.isArray(o.defaultData)){//如果默认值是数组
-				o.defaultData = o.defaultData.map(Number)
+				tempData = o.defaultData
 			}
-
-			for(var i in o.defaultData){
-				$("[tag-list-id="+id+"]>[tagid="+o.defaultData[i]+"]").click()
+			if(t.val()){ //处理默认值
+				tempData = t.val().split(",")
+				t.val("")
 			}
-			
+			tempData = tempData.map(Number)
+			o.defaultVal = tempData
+			o.defaultData = []
+			for(var i in tempData){
+				if(!isNaN(tempData[i])){
+					$("[tag-list-id="+id+"]>[tagid="+tempData[i]+"]").click()
+				}
+			}
 		}
-
 	}
 
 	$.fn.sTags.defaults = {
@@ -281,7 +323,9 @@
 					placeholder:"筛选"
 				},//筛选输入框属性,
 		tagTXT:"Tags:",//标签列表前缀
-		//click:function(e){console.log(e.attr("tagid"))},//当目标元素为div时，列表的点击事件。e为点击元素自身
+		click:function(e){
+			console.log(e.attr("tagid"))
+		},//当目标元素为div时，列表的点击事件。e为点击元素自身
 		tagName:"",//标签列表使用的html标签，默认为div，如要改为div和a之外的其他标签则需要修改css
 		tagHtml:"",//自定义标签列表中的html内容。{name} 替换为 tag.name {id}将转换为 tag.id,
 		tagAttr:{}//标签属性
