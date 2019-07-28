@@ -24,7 +24,7 @@ ver 0.2 <br>
 修复附加按钮
 <pre>
 	<code class="javascript">
-var o = $(e).data("sTipsSetOptions")
+var o = $(e).data("sTagsSetOptions")
 //增加属性
 o.removeVal //本次删除的标签id
 o.addVal //本次增加的标签id
@@ -32,6 +32,8 @@ o.defauleVal//原始标签的id
 
 //增加功能
 $(e).sTabsCtrl("ShowList")//加载列表，用于临时增加data数据后重载列表
+$(e).sTabsCtrl("destroy")//还原元素，单会保留$(e).data("sTagsSetOptions")，主要用于重新加载
+$(e).sTabsCtrl("reload")//重新加载所有内容。
 
 	</code>
 </pre>

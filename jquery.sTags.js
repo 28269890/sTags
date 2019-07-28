@@ -13,7 +13,7 @@
 		if(id === undefined){
 			return;
 		}
-		var o = t.data("sTipsSetOptions")
+		var o = t.data("sTagsSetOptions")
 		var tagInputE = $("[tag-id="+id+"]")
 		var tagListE = $("[tag-list-id="+id+"]")
 		
@@ -34,7 +34,7 @@
 			if(o.screen){//如果启用筛选
 				//定义筛选框
 				$("<input>",o.screenInput).keyup(function(){
-					var skey = t.val().replace(/[^a-zA-Z]/g,"")
+					var skey = $(this).val().replace(/[^a-zA-Z]/g,"")
 					if(skey==""){
 						tagListE.children(o.tagName+"[screen]").show()
 					}else{
@@ -195,16 +195,27 @@
 			list()
 		}
 
-		if(ctrl=="destroy"){
-			if(t.prop("tagName")=="Input"){//如果作用于div标签。
+		function destroy(){
+			if(t.prop("tagName")=="INPUT"){//如果作用于div标签。
 				tagInputE.remove()
 				tagListE.remove()
 				t.show()
+				console.log(0)
 			}
 			if(t.prop("tagName")=="DIV"){//如果作用于div标签。
 				t.html("")
 				t.removeClass(o.tagListCSS)
 			}
+		}
+
+		if(ctrl=="destroy"){
+			destroy()
+		}
+		
+		if(ctrl=="reload"){
+			destroy()
+			t.sTags()
+			list()
 		}
 	}
 
@@ -218,7 +229,10 @@
 			o.defaultVal=[]
 			o.removeVal=[]
 			t.attr("tagid",id)
-			t.data("sTipsSetOptions",o)
+			t.data("sTagsSetOptions",o)
+		}else{
+			o = t.data("sTagsSetOptions")
+			id = t.attr("tagid")
 		}
 		
 
